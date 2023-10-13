@@ -1,38 +1,36 @@
-import { useReducer } from "react";
+import { useState } from "react";
 import css from "./ContactForm.module.css";
-import { nanoid } from "@reduxjs/toolkit";
-import { useDispatch } from "react-redux";
-import { createContacts } from "redux/contactsSlice";
 
-const initialState = {
-  name: "",
-  number: "",
-};
+import { useDispatch, useSelector } from "react-redux";
 
-const reducer = (state, action) => {
-  switch (action.type) {
-    case "change":
-      return { ...state, [action.payload.name]: action.payload.value };
-    case "reset":
-      return initialState;
-    default:
-      return state;
-  }
-};
+import { selectContacts } from "redux/selectors";
+import { addContacts } from "redux/operations";
 
 const ContactForm = () => {
-  const dispatchToredux = useDispatch();
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
 
+  const dispatch = useDispatch();
+
+  const { contacts } = useSelector(selectContacts);
   const handleInputChange = ({ target: { value, name } }) => {
-    dispatch({ type: "change", payload: { name, value } });
+    if (name === "name") setName(value.trim());
+    if (name === "phone") setPhone(value.trim());
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatchToredux(createContacts({ ...state, id: nanoid(5) }));
+    const dataForm = { name: name, phone: phone };
+    const existingContact = contacts.find(
+      (contact) => contact.name === dataForm.name
+    );
+    if (existingContact) {
+      return alert(`${dataForm.name} is already in contacts`);
+    }
+    dispatch(addContacts(dataForm));
 
-    dispatch({ type: "reset" });
+    setName("");
+    setPhone("");
   };
 
   return (
@@ -47,21 +45,21 @@ const ContactForm = () => {
           pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
           title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
           required
-          value={state.name}
+          value={name}
           onChange={handleInputChange}
           className={css.input}
         />
       </label>
       <label className={css.label}>
-        Number
+        Phone
         <input
           type="tel"
-          name="number"
+          name="phone"
           placeholder="Enter number XXX-XX-XX"
           pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
           title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
           required
-          value={state.number}
+          value={phone}
           onChange={handleInputChange}
           className={css.input}
         />
