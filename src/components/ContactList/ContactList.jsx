@@ -15,13 +15,17 @@ const ContactList = () => {
     );
   };
   const visibleContacts = filteredContacts(filter, contacts);
+  // console.log(visibleContacts);
 
   return (
     <ul className={css.list}>
       {(visibleContacts ?? contacts).map((contact) => (
-        <Contact contact={contact} key={contact.id} />
+        <Contact contacts={contact} key={contact.id} />
       ))}
     </ul>
   );
 };
 export default ContactList;
+
+//  {(visibleContacts ?? contacts).map((contact) => (
+// <Contact contact={contact} key={contact.id}

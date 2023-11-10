@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { selectContacts } from "redux/selectors";
 import { addContacts } from "redux/operations";
-
+import toast from "react-hot-toast";
 const ContactForm = () => {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -28,7 +28,7 @@ const ContactForm = () => {
       return alert(`${dataForm.name} is already in contacts`);
     }
     dispatch(addContacts(dataForm));
-
+    toast.success("Successfully adding a contact!", { duration: 1500 });
     setName("");
     setPhone("");
   };

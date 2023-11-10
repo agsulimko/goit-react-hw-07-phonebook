@@ -8,3 +8,8 @@
     
     height: 25px;
 }
+.nameNumber {
+    gap: 20px;
+    display: flex;
+
+}
