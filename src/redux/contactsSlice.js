@@ -42,11 +42,13 @@ const contactsSlice = createSlice({
 
       .addCase(editContacts.fulfilled, (state, action) => {
         const editContact = action.payload;
-        const index = state.findIndex(contact => contact.id === editContact.id);
+        const index = state.contacts.findIndex(
+          contact => contact.id === editContact.id
+        );
 
         if (index !== -1) {
           // Update the contact in the state array
-          state[index] = editContact;
+          state.contacts[index] = editContact;
         }
       })
 
@@ -55,5 +57,4 @@ const contactsSlice = createSlice({
   },
 });
 
-// export const { addContact, deleteContact, editContact } = contactsSlice.actions;
 export const contactsReducer = contactsSlice.reducer;

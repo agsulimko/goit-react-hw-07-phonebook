@@ -1,32 +1,8 @@
-// import { useDispatch } from "react-redux";
-// import css from "./Contact.module.css";
-// import { deleteContacts } from "redux/operations";
-
-// const Contact = ({ contact }) => {
-//   const dispatch = useDispatch();
-
-//   const handleDelete = () => dispatch(deleteContacts(contact.id));
-//   return (
-//     <li className={css.item}>
-//       <h3>{contact.name}</h3>
-//       <h3>{contact.phone}</h3>
-
-//       <button
-//         type="button"
-//         className={css.btnClose}
-//         aria-label="Close"
-//         onClick={handleDelete}
-//       >
-//         Delete
-//       </button>
-//     </li>
-//   );
-// };
-// export default Contact;
 import { useDispatch } from "react-redux";
 import css from "./Contact.module.css";
 import { deleteContacts, editContacts } from "redux/operations";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 const Contact = ({ contacts }) => {
   const dispatch = useDispatch();
@@ -41,12 +17,9 @@ const Contact = ({ contacts }) => {
 
   useEffect(() => {
     if (!isEditMode && (name !== contacts.name || phone !== contacts.phone)) {
-      // handlEditWord({
-      // id: word.id,
-      // ukWord,
-      // enWord,
-      // });
       dispatch(editContacts({ id: contacts.id, name, phone }));
+
+      toast.success("Successfully edit a contact!", { duration: 1500 });
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -59,13 +32,7 @@ const Contact = ({ contacts }) => {
       setPhone(target.value);
     }
   };
-  // const handleInputChange = ({ target }) => {
-  //   if (target.name === "editName") {
-  //     setName(target.value);
-  //     return;
-  //   }
-  //   setNumber(target.value);
-  // };
+
   return (
     <li className={css.item}>
       {!isEditMode ? (
@@ -83,7 +50,7 @@ const Contact = ({ contacts }) => {
           />
           <input
             onChange={handleInputChange}
-            type="text"
+            type="tel"
             name="editPhone"
             value={phone}
           />
