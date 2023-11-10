@@ -41,6 +41,7 @@ const contactsSlice = createSlice({
       })
 
       .addCase(editContacts.fulfilled, (state, action) => {
+        state.isLoading = false;
         const editContact = action.payload;
         const index = state.contacts.findIndex(
           contact => contact.id === editContact.id

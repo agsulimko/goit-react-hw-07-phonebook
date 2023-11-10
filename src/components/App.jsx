@@ -12,7 +12,7 @@ import { useEffect } from "react";
 const App = () => {
   const dispatch = useDispatch();
   const { isLoading, error } = useSelector(selectContacts);
-
+  console.log(isLoading);
   useEffect(() => {
     dispatch(fetchContacts());
   }, [dispatch]);
